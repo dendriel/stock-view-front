@@ -2,10 +2,13 @@ import {useState} from "react";
 import {Button} from "react-bootstrap";
 import TickerList from "./TickerList";
 import stockService from "../../services/stock.service"
+import {useHistory} from "react-router";
 
 export default function TickerSearch() {
     const [term, setTerm] = useState("")
     const [result, setResult] = useState([])
+
+    const history = useHistory();
 
     const search = () => {
         if (!term) {
@@ -16,7 +19,6 @@ export default function TickerSearch() {
         stockService.search(term)
             .then(response => {
                 if (response && response.data) {
-                    console.log("Response: " + JSON.stringify(response.data))
                     setResult(response.data)
                 }
             })
@@ -25,6 +27,10 @@ export default function TickerSearch() {
             })
 
         setTerm("")
+    }
+
+    const onViewClicked = (ticker) => {
+        history.push(`/prices/${ticker}`)
     }
 
     return(
@@ -49,6 +55,7 @@ export default function TickerSearch() {
                 <div className={"col-8"}>
                     <TickerList
                         rows={result}
+                        onViewClicked={onViewClicked}
                     />
                 </div>
             </div>

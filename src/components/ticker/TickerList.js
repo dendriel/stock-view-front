@@ -1,8 +1,9 @@
-import {ListGroup} from "react-bootstrap";
+import {Button, ListGroup} from "react-bootstrap";
+import {BsCurrencyDollar} from "react-icons/all";
 
 
 export default function TickerList(props) {
-    const tableHeader = ["Name", "Ticker", "Price"]
+    const tableHeader = ["Name", "Ticker", "Price", ""]
 
     return (
         <div className={"container-fluid marginTopBottom"}>
@@ -35,6 +36,11 @@ export default function TickerList(props) {
                                         </div>
                                         <div className={"col text-center"}>
                                             {row.price}
+                                        </div>
+                                        <div className={"col text-center"}>
+                                            <Button variant="primary" onClick={() => props.onViewClicked(row.code)}>
+                                                <BsCurrencyDollar className="buttonIcon"/>
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
