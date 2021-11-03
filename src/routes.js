@@ -1,5 +1,7 @@
 import {Route, Switch} from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/home";
+import NotFound from "./pages/notfound";
+import Prices from "./pages/prices";
 
 
 export default function Routes() {
@@ -10,6 +12,14 @@ export default function Routes() {
             </Route>
             <Route path="/home">
                 <Home />
+            </Route>
+
+            <Route path="/prices">
+                <Prices />
+            </Route>
+
+            <Route path="*">
+                <NotFound />
             </Route>
         </Switch>
     )

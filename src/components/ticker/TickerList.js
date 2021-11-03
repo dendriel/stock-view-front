@@ -2,14 +2,7 @@ import {ListGroup} from "react-bootstrap";
 
 
 export default function TickerList(props) {
-    const tableHeader = ["Name", "Code", "Price"]
-    // const tableRows = [
-    //     { id: 1, name: "taee3", code: "taee3", price: "10,00" },
-    //     { id: 2, name: "vale3", code: "vale3", price: "10,00" },
-    //     { id: 3, name: "itsa4", code: "itsa4", price: "10,00" },
-    //     { id: 4, name: "taee4", code: "taee4", price: "10,00" },
-    //     { id: 5, name: "aeri3", code: "aeri3", price: "10,00" }
-    // ]
+    const tableHeader = ["Name", "Ticker", "Price"]
 
     return (
         <div className={"container-fluid marginTopBottom"}>
