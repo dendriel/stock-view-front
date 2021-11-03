@@ -1,12 +1,18 @@
 import StockPriceMovementChart from "../components/charts/StockPriceMovementChart";
+import {useParams} from "react-router";
 
 
 export default function Prices() {
 
+    let { ticker } = useParams();
+
+
 
     return(
         <div>
-            <StockPriceMovementChart />
+            <StockPriceMovementChart
+                ticker={ticker}
+            />
         </div>
     )
 }

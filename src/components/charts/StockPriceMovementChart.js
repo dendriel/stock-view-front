@@ -1,38 +1,56 @@
 import ReactApexChart from 'react-apexcharts'
+import stockService from "../../services/stock.service";
+import {useEffect, useState} from "react";
+import moment from "moment";
 
 
-export default function StockPriceMovementChart() {
+export default function StockPriceMovementChart(props) {
+    const [series, setSeries] = useState([])
+
+    useEffect(() => {
+        const ticker = props.ticker
+        if (!ticker) {
+            console.log("Could not load stock price movement chart. Not ticker specified.")
+            return
+        }
+
+        stockService.getPrices(ticker)
+            .then(response => {
+                if (response && response.data) {
+                    loadSeries(ticker, response.data)
+
+                    // TODO: if data.prices are empty, load NOT FOUND (/prices)
+                }
+            })
+            .catch(error => {
+                console.log(`Failed to retrieve prices for ticker ${ticker}. Error: ${error}`)
+            })
+    }, [props.ticker])
+
+    const loadSeries = (ticker, data) => {
+        console.log(data)
+
+        if (data.length === 0) {
+            console.log("Invalid series data!")
+            return;
+        }
+
+        data = data[0]
+
+        let seriesData = data.prices.map(entry =>
+            [
+                moment.utc(entry.date, 'DD/MM/YY HH:mm'),
+                entry.price
+            ]
+        )
+
+        setSeries([{
+            name: ticker,
+            data: seriesData
+        }])
+    }
 
     const state = {
-        series: [{
-            name: 'XYZ MOTORS',
-            data: [
-                [
-                    new Date("2014-01-01").getTime(),
-                    20000000
-                ],
-                [
-                    new Date("2014-01-02").getTime(),
-                    10379978
-                ],
-                [
-                    new Date("2014-01-03").getTime(),
-                    30493749
-                ],
-                [
-                    new Date("2014-01-04").getTime(),
-                    10785250
-                ],
-                [
-                    new Date("2014-01-05").getTime(),
-                    33901904
-                ],
-                [
-                    new Date("2014-01-06").getTime(),
-                    11576838
-                ],
-            ]
-        }],
         options: {
             chart: {
                 type: 'area',
@@ -70,7 +88,7 @@ export default function StockPriceMovementChart() {
             yaxis: {
                 labels: {
                     formatter: function (val) {
-                        return (val / 1000000).toFixed(0);
+                        return val.toFixed(2)
                     },
                 },
                 title: {
@@ -78,14 +96,12 @@ export default function StockPriceMovementChart() {
                 },
             },
             xaxis: {
-                type: 'datetime',
+                 type: 'datetime'
             },
             tooltip: {
                 shared: false,
-                y: {
-                    formatter: function (val) {
-                        return (val / 1000000).toFixed(0)
-                    }
+                x: {
+                    format: 'dd/MM/yyyy HH:mm'
                 }
             }
         },
@@ -93,7 +109,7 @@ export default function StockPriceMovementChart() {
 
     return(
         <div>
-            <ReactApexChart options={state.options} series={state.series} type="area" height={350} />
+            <ReactApexChart options={state.options} series={series} type="area" height={350} />
         </div>
     )
 }

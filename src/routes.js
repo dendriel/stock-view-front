@@ -14,7 +14,7 @@ export default function Routes() {
                 <Home />
             </Route>
 
-            <Route path="/prices">
+            <Route path="/prices/:ticker">
                 <Prices />
             </Route>
 
