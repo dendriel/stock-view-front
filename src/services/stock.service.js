@@ -12,9 +12,14 @@ const getPrices = (ticker) => {
     return restService.api.get(path + "/prices?ticker=" + ticker)
 }
 
+const getIndicators = (ticker) => {
+    return restService.api.get(path + "/indicators?ticker=" + ticker)
+}
+
 const stockService = {
     search: search,
-    getPrices: getPrices
+    getPrices: getPrices,
+    getIndicators: getIndicators
 }
 
 export default stockService

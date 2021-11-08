@@ -1,15 +1,14 @@
-import StockPriceMovementChart from "../components/charts/StockPriceMovementChart";
+import RadarMultipleChart from "../components/charts/RadarMultipleChart";
 import {useParams} from "react-router";
 
-
-export default function Prices() {
+export default function Radar() {
     let { ticker } = useParams();
 
     return(
         <div className={"container-fluid"}>
             <div className={"row"}>
                 <div className="col text-center align-middle paddingTopBottom">
-                    <StockPriceMovementChart
+                    <RadarMultipleChart
                         ticker={ticker}
                     />
                 </div>
