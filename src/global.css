@@ -125,11 +125,22 @@
   margin-bottom: 10px;
 }
 
+.marginTopBottomSmall {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .marginRight {
   margin-right: 10px;
 }
 
 .marginLeft {
+  margin-left: 10px;
+}
+
+
+.marginLeftRight {
+  margin-right: 10px;
   margin-left: 10px;
 }
 
@@ -141,7 +152,7 @@
   margin-bottom: 10px;
 }
 
-.largeMarginBottom {
+.marginBottomLarge {
   margin-bottom: 30px;
 }
 
@@ -167,4 +178,8 @@
   border-style: solid;
   border-radius: 0.25rem;
   border-color: #ced4da;
+}
+
+.minHeightSmall {
+  min-height: 50px;
 }

@@ -1,5 +1,5 @@
 import {Button, ListGroup} from "react-bootstrap";
-import {BsCurrencyDollar} from "react-icons/all";
+import {BsCurrencyDollar, BsFillPlusCircleFill} from "react-icons/all";
 
 
 export default function TickerList(props) {
@@ -38,8 +38,11 @@ export default function TickerList(props) {
                                             {row.price}
                                         </div>
                                         <div className={"col text-center"}>
-                                            <Button variant="primary" onClick={() => props.onViewClicked(row.code)}>
+                                            <Button variant="secondary" onClick={() => props.onViewClicked(row.code)}>
                                                 <BsCurrencyDollar className="buttonIcon"/>
+                                            </Button>
+                                            <Button className={"marginLeftRight"} variant="secondary" onClick={() => props.onSelected(row.code)}>
+                                                <BsFillPlusCircleFill className="buttonIcon"/>
                                             </Button>
                                         </div>
                                     </div>

@@ -4,7 +4,7 @@ import TickerList from "./TickerList";
 import stockService from "../../services/stock.service"
 import {useHistory} from "react-router";
 
-export default function TickerSearch() {
+export default function TickerSearch(props) {
     const [term, setTerm] = useState("")
     const [result, setResult] = useState([])
 
@@ -56,6 +56,7 @@ export default function TickerSearch() {
                     <TickerList
                         rows={result}
                         onViewClicked={onViewClicked}
+                        onSelected={props.onSelected}
                     />
                 </div>
             </div>
