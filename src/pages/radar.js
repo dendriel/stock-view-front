@@ -9,7 +9,7 @@ export default function Radar() {
             <div className={"row"}>
                 <div className="col text-center align-middle paddingTopBottom">
                     <RadarMultipleChart
-                        ticker={ticker}
+                        ticker={[ticker]}
                     />
                 </div>
             </div>

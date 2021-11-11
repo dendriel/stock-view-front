@@ -4,44 +4,74 @@ import stockService from "../../services/stock.service";
 
 export default function RadarMultipleChart(props) {
     const [series, setSeries] = useState([])
+    const [indicators, setIndicators] = useState([])
 
     useEffect(() => {
-        const ticker = props.ticker
-        if (!ticker) {
+        const tickers = props.tickers
+        if (!tickers) {
             console.log("Could not load radar-multiple chart. Not ticker specified.")
+            return
+        }
+
+        tickers
+            .filter(t => !series.find(s => s.name === t))
+            .forEach(loadIndicator)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.tickers])
+
+    const loadIndicator = (ticker) => {
+        console.log(`Load ${ticker}`)
+        if (indicators.find(i => i.ticker === ticker)) {
+            console.log(`Ticker ${ticker} found on indicators`)
             return
         }
 
         stockService.getIndicators(ticker)
             .then(response => {
                 if (response && response.data) {
-                    loadSeries(response.data)
+                    console.log(`Stock ${ticker} indicators loaded`)
+                    setIndicators([...indicators, response.data])
                 }
             })
             .catch(error => {
                 console.log(`Failed to retrieve indicators for ticker ${ticker}. Error: ${error}`)
             })
-    }, [props.ticker])
+    }
 
+    useEffect(() => {
+        refreshSeries()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [indicators])
 
-    const loadSeries = (data) => {
-        console.log(data)
+    const refreshSeries = () => {
+        console.log("refreshSeries")
+        let newSeries = []
+        props.tickers
+            .filter(t => !series.find(s => s.name === t))
+            .forEach(t => {
+                const data = indicators.find(i => i.ticker.toLowerCase() === t.toLowerCase());
+                if (data) {
+                    newSeries.push(formatSerieData(data))
+                }
+            })
 
-        // TODO: comparar apenas indicadores do mesmo tipo
-        setSeries([{
-                name: data.ticker,
-                data: [
-                    (data.indicators.p_l * 10).toFixed(2),
-                    data.indicators.p_vp * 10,
-                    data.indicators.roe,
-                    data.indicators.roic,
-                    data.indicators.margeliquida,
-                    data.indicators.dy,
-                    data.indicators.receitas_cagr5,
-                    data.indicators.lucros_cagr5,
-                ]
-            }
-        ])
+        setSeries(newSeries)
+    }
+
+    const formatSerieData = (data) => {
+        return {
+            name: data.ticker,
+            data: [
+                (data.indicators.p_l * 10).toFixed(2),
+                (data.indicators.p_vp * 10).toFixed(2),
+                data.indicators.roe,
+                data.indicators.roic,
+                data.indicators.margeliquida,
+                data.indicators.dy,
+                data.indicators.receitas_cagr5,
+                data.indicators.lucros_cagr5,
+            ]
+        }
     }
 
     const options = {
@@ -85,6 +115,6 @@ export default function RadarMultipleChart(props) {
     };
 
     return(
-            <ReactApexChart options={options} series={series} type="radar" height={350} />
-        )
+        <ReactApexChart options={options} series={series} type="radar" height={350} />
+    )
 }
