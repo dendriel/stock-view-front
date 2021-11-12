@@ -7,15 +7,23 @@ export default function RadarMultipleChart(props) {
     const [indicators, setIndicators] = useState([])
 
     useEffect(() => {
+        console.log(`Tickers updated. Count: ${props.tickers.length}`)
         const tickers = props.tickers
-        if (!tickers) {
-            console.log("Could not load radar-multiple chart. Not ticker specified.")
+        if (!tickers || tickers.length === 0) {
+            refreshSeries()
             return
         }
 
-        tickers
-            .filter(t => !series.find(s => s.name === t))
-            .forEach(loadIndicator)
+        let newTickers = tickers
+            .filter(t => !series.find(s => s.name.toLowerCase() === t.toLowerCase()));
+
+        if (newTickers.length === 0) {
+            refreshSeries()
+            return
+        }
+
+        newTickers.forEach(loadIndicator)
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.tickers])
 
@@ -76,7 +84,6 @@ export default function RadarMultipleChart(props) {
 
     const options = {
         chart: {
-            height: 350,
             type: 'radar',
             dropShadow: {
                 enabled: true,
@@ -115,6 +122,8 @@ export default function RadarMultipleChart(props) {
     };
 
     return(
-        <ReactApexChart options={options} series={series} type="radar" height={350} />
+        <ReactApexChart options={options} series={series} type="radar" />
+        // TODO: adicionar tabela elencando maiores e menores valores de cada açao
+        // TODO: revisar indicadores exibidos
     )
 }
