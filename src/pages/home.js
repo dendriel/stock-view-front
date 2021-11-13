@@ -1,7 +1,7 @@
 import TickerSearch from "../components/ticker/TickerSearch";
 import TickerSelected from "../components/ticker/TickerSelected";
 import {useState} from "react";
-import RadarMultipleChart from "../components/charts/RadarMultipleChart";
+import StockIndicatorsRadarGroup from "../components/charts/StockIndicatorsRadarGroup";
 
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
             </div>
             <div className={"row"}>
                 <div className="col text-center align-middle paddingTopBottom">
-                    <RadarMultipleChart tickers={tickers} />
+                    <StockIndicatorsRadarGroup tickers={tickers} />
                 </div>
             </div>
         </div>

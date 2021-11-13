@@ -1,4 +1,5 @@
 import restService from "./rest.service"
+import {addIndicator, getIndicator} from "../storage/indicatorsStorage";
 
 const proxyPath = "/api"
 const path = proxyPath + "/stock"
@@ -13,7 +14,18 @@ const getPrices = (ticker) => {
 }
 
 const getIndicators = (ticker) => {
+    let indicator = getIndicator(ticker);
+    if (indicator) {
+        return Promise.resolve({ data: indicator })
+    }
+
     return restService.api.get(path + "/indicators?ticker=" + ticker)
+        .then(response => {
+            if (response && response.data) {
+                addIndicator(response.data)
+            }
+            return Promise.resolve(response)
+        })
 }
 
 const stockService = {
